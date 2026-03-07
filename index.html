@@ -14,10 +14,23 @@
     body { font-family: 'Inter', sans-serif; line-height: 1.6; color: #333; }
 
     /* GrapesJS Editor Styles */
-    * { box-sizing: border-box; } body {margin: 0;}.hero-section{display:flex;padding:20px;min-height:400px;text-align:center;align-items:center;border-radius:8px;justify-content:center;background-color:#f3f4f6;}.hero-title{color:#111827;font-size:3rem;font-weight:bold;margin-bottom:1rem;}.hero-subtitle{color:#4b5563;margin:0 auto;font-size:1.25rem;max-width:600px;}#ifxd{color:#6b7280;font-size:0.875rem;margin-top:20px;}
+    * { box-sizing: border-box; } body {margin: 0;}.hero-section{min-height:calc(-80px + 100vh);}.hero-column{margin-top:100px;margin-bottom:100px;}.hero-title{font-size:4rem;}a, button{transition-behavior:normal;transition-duration:0.3s;transition-timing-function:ease;transition-delay:0s;transition-property:all;}@media (max-width: 1024px){.hero-column{margin-top:40px;margin-bottom:40px;}.hero-left{margin-bottom:20px;}.hero-right{margin-top:20px;}.hero-title{font-size:3.5rem;}}
   </style>
 </head>
 <body>
-  <body><div class="hero-section"><h1 class="hero-title">Welcome to Your New Site</h1><p class="hero-subtitle">This is your homepage. You can use the visual editor to customize this content or import an existing HTML template.</p><p id="ifxd">Note: The GrapesJS Site Editor supports Tailwind CSS classes out of the box!</p></div></body>
+  <body><!-- BEGIN: MainHeader --><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Beacon Climate Action Now</title><meta name="description" content="Building a Beautiful Future By Fighting The Climate Crisis Together"/><header data-purpose="site-header" class="bg-[#F5EFE6] px-6 md:px-12 flex items-center justify-between sticky top-0 z-50 shadow-sm py-2"><!-- Logo Container --><div data-purpose="logo" class="flex-shrink-0"><a href="#" class="block"><img alt="Beacon Climate Action Now Logo" src="/project-images/bcan/bcan.svg" class="h-[90px] w-auto object-contain rounded-full"/></a></div><!-- Navigation and CTA Container --><div data-purpose="desktop-nav" class="hidden lg:flex items-center space-x-8"><nav><ul class="flex space-x-8 text-gray-800 font-semibold text-base tracking-wide"><li><a href="#" class="hover:text-[#EC5A29]">Home</a></li><li><a href="#" class="hover:text-[#EC5A29]">About</a></li><li><a href="#" class="hover:text-[#EC5A29]">Our Work</a></li><li><a href="#" class="hover:text-[#EC5A29]">Events</a></li><li><a href="#" class="hover:text-[#EC5A29]">Press</a></li><li><a href="#" class="hover:text-[#EC5A29]">More</a></li></ul></nav><!-- Header CTA Button --><a href="#" class="bg-[#EC5A29] text-white px-6 py-2.5 rounded-full font-bold uppercase text-sm hover:bg-orange-700 shadow-md transform hover:scale-105 tracking-wide">
+        Join Us
+      </a></div><!-- Mobile Menu Button (Hamburger) --><div data-purpose="mobile-menu-trigger" class="lg:hidden"><button type="button" class="text-gray-800 hover:text-[#EC5A29] focus:outline-none">Send</button></div></header><!-- END: MainHeader --><!-- BEGIN: HeroSection --><main><section data-purpose="hero-banner" class="bg-[#EC5A29] w-full flex flex-col lg:flex-row items-stretch hero-section"><!-- Left Column: Content --><div data-purpose="hero-content" class="w-full lg:w-1/2 flex flex-col justify-center px-10 md:px-20 lg:pl-32 lg:pr-16 text-white space-y-8 hero-column hero-left"><!-- Headline: Condensed, Bold, Uppercase --><h1 class="font-display leading-none uppercase tracking-wide font-bold hero-title">
+          Building a <br/>
+          Beautiful Future <br/>
+          By Fighting The <br/>
+          Climate Crisis <br/>
+          Together
+        </h1><!-- Subtext --><p class="text-lg md:text-xl lg:text-2xl font-light max-w-xl opacity-90 leading-relaxed">
+          We work with our neighbors in the Mid-Hudson Valley to create a
+          hopeful, joyful home for us all.
+        </p><!-- CTA Button --><div class="pt-4"><a href="#" class="inline-block bg-white text-[#EC5A29] px-[30px] py-3 rounded-full font-bold uppercase text-lg hover:bg-gray-100 shadow-lg transform hover:-translate-y-0.5 transition-transform tracking-wide">
+            Join Us
+          </a></div></div><!-- Right Column: Image --><div data-purpose="hero-image-container" class="w-full lg:w-1/2 relative min-h-[400px] lg:min-h-auto hero-column hero-right"><img alt="Protestors holding signs" src="/project-images/bcan/homepage.avif" class="absolute inset-0 w-full h-full object-cover lg:object-left hero-image"/></div></section></main><!-- END: HeroSection --></body>
 </body>
 </html>

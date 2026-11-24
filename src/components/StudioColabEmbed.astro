@@ -1,0 +1,35 @@
+---
+/**
+ * Reusable StudioCoLab Embed Component
+ *
+ * Drop into any Astro page to embed live StudioCoLab apps
+ * (e.g., Tool Share, Events, Projects, Mutual Credit) once the
+ * corresponding /embed/* routes are enabled on studiocolab.net.
+ */
+interface Props {
+  app: 'toolshare' | 'events' | 'projects' | 'credit';
+  orgSlug: string;
+  height?: number;
+  title?: string;
+}
+
+const {
+  app,
+  orgSlug,
+  height = 500,
+  title = `StudioCoLab ${app} widget`,
+} = Astro.props;
+
+const src = `https://www.studiocolab.net/embed/${app}/${orgSlug}`;
+---
+
+<div class="w-full rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-lowest shadow-xs">
+  <iframe
+    src={src}
+    title={title}
+    width="100%"
+    height={height}
+    loading="lazy"
+    class="w-full border-0 block"
+  ></iframe>
+</div>

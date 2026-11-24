@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* Beacon Repair Cafe Material-inspired warm palette */
+  --color-primary: #a33722;
+  --color-primary-container: #c44f37;
+  --color-on-primary: #ffffff;
+  --color-secondary: #455d97;
+  --color-on-secondary: #ffffff;
+  --color-tertiary: #006761;
+  --color-surface: #fff8f6;
+  --color-surface-warm: #fff9f7;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #fff0ee;
+  --color-surface-container: #ffe9e5;
+  --color-surface-container-high: #fae3df;
+  --color-surface-dim: #ebd5d1;
+  --color-on-surface: #241916;
+  --color-on-surface-variant: #57423d;
+  --color-outline: #8b716c;
+  --color-outline-variant: #dfc0b9;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  line-height: 1.6;
+}

@@ -1,0 +1,148 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  brandTitle?: string;
+  description?: string;
+  activeNav?: 'home' | 'past-events';
+}
+
+const {
+  title = 'Beacon Repair Cafe',
+  brandTitle = 'Repair Cafe',
+  description = 'Free repairs by your neighbors — Beacon-Fishkill Repair Cafe.',
+  activeNav = 'home',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const subscribeUrl =
+  'https://docs.google.com/forms/d/e/1FAIpQLSfvIZV0TCbNxahQkY5hoBEj6zOKqoN0odjUNIwgmPsST8akDA/viewform';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/x-icon" href={`${base}/favicon.ico`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body id="top" class="min-h-screen flex flex-col bg-surface text-on-surface">
+    <!-- Shared Header & Navigation -->
+    <header class="sticky top-0 w-full z-50 backdrop-blur-md bg-surface-warm/95 border-b border-outline-variant/20">
+      <nav class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+        <a
+          href={`${base}/`}
+          class="text-xl font-bold tracking-tighter text-on-surface hover:text-primary transition-colors"
+        >
+          {brandTitle}
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex gap-8 items-center font-medium tracking-tight">
+          <a
+            href={`${base}/#top`}
+            class:list={[
+              'transition-colors duration-200 hover:text-primary pb-1',
+              activeNav === 'home' ? 'text-primary border-b-2 border-primary' : 'text-on-surface',
+            ]}
+          >
+            Next Event
+          </a>
+          <a
+            href={`${base}/#volunteer`}
+            class="transition-colors duration-200 hover:text-primary pb-1 text-on-surface"
+          >
+            Volunteer
+          </a>
+          <a
+            href={`${base}/#promote`}
+            class="transition-colors duration-200 hover:text-primary pb-1 text-on-surface"
+          >
+            Promote
+          </a>
+          <a
+            href={`${base}/past-events`}
+            class:list={[
+              'transition-colors duration-200 hover:text-primary pb-1',
+              activeNav === 'past-events' ? 'text-primary border-b-2 border-primary' : 'text-on-surface',
+            ]}
+          >
+            Past Events
+          </a>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a
+            href={subscribeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-primary text-on-primary px-5 py-2 font-medium hover:bg-primary-container transition-colors duration-200 active:scale-95 rounded-xl text-sm sm:text-base"
+          >
+            Subscribe
+          </a>
+
+          <!-- Mobile menu button -->
+          <button
+            id="mobile-menu-toggle"
+            type="button"
+            aria-label="Toggle navigation menu"
+            aria-expanded="false"
+            class="md:hidden p-2 rounded-lg text-on-surface hover:bg-surface-container transition-colors"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Mobile Navigation Drawer -->
+      <div id="mobile-menu" class="hidden md:hidden border-t border-outline-variant/20 bg-surface-warm px-6 py-4 space-y-3">
+        <a href={`${base}/#top`} class="block font-medium text-on-surface hover:text-primary">Next Event</a>
+        <a href={`${base}/#volunteer`} class="block font-medium text-on-surface hover:text-primary">Volunteer</a>
+        <a href={`${base}/#promote`} class="block font-medium text-on-surface hover:text-primary">Promote</a>
+        <a href={`${base}/past-events`} class="block font-medium text-on-surface hover:text-primary">Past Events</a>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <!-- Shared Footer -->
+    <footer class="bg-surface-container w-full py-12 px-6 border-t border-outline-variant/30">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6 max-w-7xl mx-auto">
+        <div class="text-lg font-bold text-secondary">Beacon-Fishkill Repair Cafe</div>
+        <div class="flex gap-6 text-sm font-medium text-on-surface-variant">
+          <a href={`${base}/`} class="hover:text-primary transition-colors">Home</a>
+          <a href={`${base}/past-events`} class="hover:text-primary transition-colors">Past Events</a>
+          <a
+            href="mailto:beaconfishkillrepaircafe@gmail.com?subject=Contact%20From%20Repair%20Cafe%20Website"
+            class="hover:text-primary transition-colors font-bold text-on-surface"
+          >
+            Contact
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.getElementById('mobile-menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      toggle?.addEventListener('click', () => {
+        const isHidden = menu?.classList.toggle('hidden');
+        toggle.setAttribute('aria-expanded', String(!isHidden));
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,169 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const allEvents = await getCollection('events');
+
+// Pick the earliest upcoming event (or fall back to the most recent event if none are upcoming)
+const upcomingEvents = allEvents
+  .filter((e) => e.data.status === 'upcoming')
+  .sort((a, b) => a.data.sortDate.localeCompare(b.data.sortDate));
+
+const pastEventsCount = allEvents.filter((e) => e.data.status === 'past').length;
+const featured = upcomingEvents[0] ?? allEvents.sort((a, b) => b.data.sortDate.localeCompare(a.data.sortDate))[0];
+
+const rendered = featured ? await render(featured) : null;
+const Content = rendered?.Content;
+
+function resolveUrl(url: string) {
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  return `${base}${url.startsWith('/') ? url : `/${url}`}`;
+}
+---
+
+<Layout title={featured?.data.title || 'Beacon Repair Cafe'} brandTitle={featured?.data.title || 'Repair Cafe'} activeNav="home">
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 bg-surface-container-lowest py-10 lg:py-14">
+    <div class="flex flex-col items-center gap-10">
+      <img
+        src="https://www.studiocolab.net/project-images/repair-cafe/Dutchess_Beacon_Logo+500x337.png"
+        alt="Beacon-Fishkill Repair Cafe Logo"
+        class="w-[300px] max-w-full h-auto"
+      />
+
+      {featured && (
+        <div class="w-full max-w-xl mx-auto">
+          <div class="bg-surface-container p-8 border-l-4 border-primary rounded-r-lg shadow-xs">
+            <div class="space-y-6">
+              <div class="flex flex-wrap items-center gap-6">
+                <div class="flex flex-col">
+                  <span class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">DATE</span>
+                  <span class="text-2xl font-bold text-on-surface">{featured.data.date}</span>
+                </div>
+                <div class="hidden sm:block w-px h-12 bg-outline-variant/40"></div>
+                <div class="flex flex-col">
+                  <span class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">EVENT HOURS</span>
+                  <span class="text-2xl font-bold text-on-surface">{featured.data.hours}</span>
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-outline-variant/40">
+                <div class="flex flex-col">
+                  <span class="text-xs uppercase tracking-widest text-on-surface-variant font-bold">LOCATION</span>
+                  <span class="text-lg font-bold text-on-surface">{featured.data.location}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Narrative Section -->
+  {featured && (
+    <section class="py-12 bg-surface-warm">
+      <div class="max-w-3xl mx-auto px-6 text-center space-y-4">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-secondary">
+          {featured.data.headline}
+        </h1>
+        <p class="text-lg sm:text-xl text-on-surface-variant leading-relaxed font-light">
+          {featured.data.summary}
+        </p>
+        {Content && (
+          <div class="pt-2 text-base text-on-surface-variant max-w-2xl mx-auto">
+            <Content />
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- Volunteer Signup -->
+  <section id="volunteer" class="bg-surface-container-high py-14">
+    <div class="max-w-3xl mx-auto px-6 text-center space-y-6">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-secondary">
+        WANT TO VOLUNTEER?
+      </h2>
+      <p class="text-on-surface-variant">
+        We are always looking for handy neighbors, repair coaches, and event helpers.
+      </p>
+      <div class="pt-2">
+        <a
+          href={featured?.data.volunteerUrl || 'https://forms.gle/TqHY6SVxABCbC9UDA'}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block bg-primary text-on-primary px-8 py-4 font-bold text-lg hover:bg-primary-container transition-colors duration-200 active:scale-95 rounded-xl"
+        >
+          Volunteer to Repair or help at the event
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Promotion Assets -->
+  <section id="promote" class="bg-surface-warm py-14">
+    <div class="max-w-7xl mx-auto px-6 space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div class="space-y-2">
+          <h2 class="font-bold text-secondary text-3xl sm:text-4xl tracking-tight">
+            PROMOTION ASSETS
+          </h2>
+          <p class="text-on-surface-variant max-w-lg">
+            Help us get the word out for this event by sharing our flyers, social posts, and press materials.
+          </p>
+        </div>
+
+        {pastEventsCount > 0 && (
+          <a
+            href={`${base}/past-events`}
+            class="text-sm font-semibold text-primary hover:underline"
+          >
+            View Past Events ({pastEventsCount}) →
+          </a>
+        )}
+      </div>
+
+      {featured?.data.assets && featured.data.assets.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featured.data.assets.map((asset) => (
+            <div class="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30 space-y-4">
+              {asset.image && (
+                <div class="aspect-square bg-surface-dim overflow-hidden flex items-center justify-center rounded-sm">
+                  <img
+                    src={resolveUrl(asset.image)}
+                    alt={asset.title}
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div class="flex justify-between items-center gap-2">
+                <p class="text-sm font-bold text-on-surface">{asset.title}</p>
+                <a
+                  href={resolveUrl(asset.url)}
+                  download={asset.download ? '' : undefined}
+                  target={asset.download ? undefined : '_blank'}
+                  rel={asset.download ? undefined : 'noopener noreferrer'}
+                  class="text-sm font-semibold text-secondary hover:text-primary transition-colors shrink-0"
+                >
+                  {asset.actionLabel}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="bg-surface-container-lowest border border-dashed border-outline-variant rounded-lg p-8 text-center text-on-surface-variant">
+          <p class="font-medium">Promotional flyers and press materials for the next event will be posted here soon.</p>
+          <p class="text-sm mt-2">
+            Looking for materials from earlier cafes?{' '}
+            <a href={`${base}/past-events`} class="text-primary font-semibold hover:underline">
+              Browse Past Events →
+            </a>
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

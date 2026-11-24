@@ -1,0 +1,93 @@
+media:
+  input: public/project-images/repair-cafe
+  output: /project-images/repair-cafe
+
+content:
+  - name: events
+    label: Repair Cafe Events
+    type: collection
+    path: src/content/events
+    filename: "{fields.sortDate}-{primary}.md"
+    view:
+      fields: [title, date, status, location]
+      primary: title
+      sort: [sortDate]
+      default:
+        sort: sortDate
+        order: desc
+    fields:
+      - name: title
+        label: Event Title
+        type: string
+        required: true
+      - name: status
+        label: Event Status
+        type: select
+        required: true
+        default: upcoming
+        options:
+          values:
+            - value: upcoming
+              label: Upcoming (Shown on Home Page)
+            - value: past
+              label: Past (Shown on Past Events Page)
+      - name: date
+        label: Display Date
+        type: string
+        required: true
+        description: "Human-readable date shown on the page (e.g., May 30th, 2026)"
+      - name: sortDate
+        label: Sort Date (YYYY-MM-DD)
+        type: string
+        required: true
+        description: "ISO date used for chronological ordering (e.g., 2026-05-30)"
+      - name: hours
+        label: Event Hours
+        type: string
+        required: true
+        default: "1:00 PM - 4:00 PM"
+      - name: location
+        label: Location
+        type: string
+        required: true
+      - name: headline
+        label: Section Headline
+        type: string
+        default: "FREE REPAIRS BY YOUR NEIGHBORS"
+      - name: summary
+        label: Short Summary
+        type: text
+        required: true
+      - name: volunteerUrl
+        label: Volunteer Signup URL
+        type: string
+      - name: subscribeUrl
+        label: Subscribe Form URL
+        type: string
+      - name: assets
+        label: Promotion Assets
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Asset Title
+            type: string
+            required: true
+          - name: image
+            label: Thumbnail Image
+            type: image
+          - name: url
+            label: Link or File Path
+            type: string
+            required: true
+          - name: actionLabel
+            label: Link Label
+            type: string
+            default: "Download"
+          - name: download
+            label: Force Download
+            type: boolean
+            default: false
+      - name: body
+        label: Additional Event Notes
+        type: rich-text

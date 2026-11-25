@@ -58,6 +58,10 @@ content:
         label: Short Summary
         type: text
         required: true
+      - name: embedFormSlug
+        label: StudioCoLab Embedded Form Slug
+        type: string
+        description: "Slug of a StudioCoLab Embedded Form (e.g., lamp-repair-app)"
       - name: applyUrl
         label: Repair Application URL
         type: string

@@ -3,33 +3,59 @@
  * Reusable StudioCoLab Embed Component
  *
  * Drop into any Astro page to embed live StudioCoLab apps
- * (e.g., Tool Share, Events, Projects, Mutual Credit) once the
- * corresponding /embed/* routes are enabled on studiocolab.net.
+ * (Forms, Tool Share, Events, Projects, Mutual Credit).
+ * Automatically resizes iframe height via postMessage so there
+ * are no awkward inner scrollbars.
  */
 interface Props {
-  app: 'toolshare' | 'events' | 'projects' | 'credit';
-  orgSlug: string;
+  app: 'forms' | 'toolshare' | 'events' | 'projects' | 'credit';
+  slug: string;
   height?: number;
   title?: string;
+  baseUrl?: string;
 }
 
 const {
   app,
-  orgSlug,
-  height = 500,
-  title = `StudioCoLab ${app} widget`,
+  slug,
+  height = 680,
+  title = `StudioCoLab ${app}`,
+  baseUrl = 'https://www.studiocolab.net',
 } = Astro.props;
 
-const src = `https://www.studiocolab.net/embed/${app}/${orgSlug}`;
+const cleanBase = baseUrl.replace(/\/$/, '');
+const src = `${cleanBase}/embed/${app}/${slug}`;
+const iframeId = `studiocolab-embed-${app}-${slug}`.replace(/[^a-zA-Z0-9-_]/g, '-');
 ---
 
 <div class="w-full rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-lowest shadow-xs">
   <iframe
+    id={iframeId}
     src={src}
     title={title}
     width="100%"
     height={height}
     loading="lazy"
-    class="w-full border-0 block"
+    data-studiocolab-slug={slug}
+    data-studiocolab-origin={new URL(cleanBase).origin}
+    class="w-full border-0 block transition-[height] duration-150"
   ></iframe>
 </div>
+
+<script>
+  window.addEventListener('message', (event) => {
+    const data = event.data;
+    if (!data || data.type !== 'studiocolab-embed-resize' || typeof data.height !== 'number') {
+      return;
+    }
+
+    const iframes = document.querySelectorAll<HTMLIFrameElement>('iframe[data-studiocolab-slug]');
+    for (const iframe of iframes) {
+      const expectedOrigin = iframe.getAttribute('data-studiocolab-origin');
+      const slug = iframe.getAttribute('data-studiocolab-slug');
+      if (expectedOrigin && event.origin !== expectedOrigin) continue;
+      if (data.slug && slug !== data.slug) continue;
+      iframe.style.height = `${Math.max(240, Math.ceil(data.height))}px`;
+    }
+  });
+</script>

@@ -58,6 +58,9 @@ content:
         label: Short Summary
         type: text
         required: true
+      - name: applyUrl
+        label: Repair Application URL
+        type: string
       - name: volunteerUrl
         label: Volunteer Signup URL
         type: string

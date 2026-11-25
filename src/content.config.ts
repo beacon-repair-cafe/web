@@ -12,6 +12,7 @@ const events = defineCollection({
     status: z.enum(['upcoming', 'past']),
     headline: z.string().default('FREE REPAIRS BY YOUR NEIGHBORS'),
     summary: z.string(),
+    applyUrl: z.string().optional(),
     volunteerUrl: z.string().optional(),
     subscribeUrl: z.string().optional(),
     assets: z

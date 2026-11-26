@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
-import StudioColabEmbed from '../components/StudioColabEmbed.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const allEvents = await getCollection('events');
@@ -83,59 +82,34 @@ function resolveUrl(url: string) {
 
   <!-- Apply for a Repair -->
   <section id="apply" class="scroll-mt-20 bg-surface-container-lowest py-14 border-y border-outline-variant/20">
-    <div class="max-w-3xl mx-auto px-6 space-y-6">
-      <div class="text-center space-y-3">
-        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-secondary">
-          Apply for your lamp to be repaired
-        </h2>
-        <p class="text-lg text-on-surface-variant">
-          We are accepting a limited number of lamps for this event
-        </p>
+    <div class="max-w-3xl mx-auto px-6 text-center space-y-5">
+      <h2 class="text-3xl sm:text-4xl font-bold tracking-tight text-secondary">
+        Apply for your lamp to be repaired
+      </h2>
+      <p class="text-lg text-on-surface-variant">
+        We are accepting a limited number of lamps for this event
+      </p>
+      <div class="pt-2">
+        {featured?.data.applyUrl ? (
+          <a
+            href={resolveUrl(featured.data.applyUrl)}
+            target={featured.data.applyUrl.startsWith('http') ? '_blank' : undefined}
+            rel={featured.data.applyUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
+            class="inline-block bg-primary text-on-primary px-8 py-4 font-bold text-lg hover:bg-primary-container transition-colors duration-200 active:scale-95 rounded-xl"
+          >
+            Apply to have your lamp repaired
+          </a>
+        ) : (
+          <button
+            type="button"
+            disabled
+            title="Application form link coming soon"
+            class="inline-block bg-primary/70 text-on-primary px-8 py-4 font-bold text-lg rounded-xl cursor-not-allowed"
+          >
+            Apply to have your lamp repaired
+          </button>
+        )}
       </div>
-
-      {featured?.data.embedFormSlug ? (
-        <div class="space-y-3">
-          <StudioColabEmbed
-            app="forms"
-            slug={featured.data.embedFormSlug}
-            title="Apply to have your lamp repaired"
-            height={780}
-          />
-          <p class="text-center text-xs text-on-surface-variant">
-            Having trouble viewing the form?{' '}
-            <a
-              href={`https://www.studiocolab.net/embed/forms/${featured.data.embedFormSlug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-primary font-semibold hover:underline"
-            >
-              Open the form in a new tab ↗
-            </a>
-          </p>
-        </div>
-      ) : (
-        <div class="pt-2 text-center">
-          {featured?.data.applyUrl ? (
-            <a
-              href={featured.data.applyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-block bg-primary text-on-primary px-8 py-4 font-bold text-lg hover:bg-primary-container transition-colors duration-200 active:scale-95 rounded-xl"
-            >
-              Apply to have your lamp repaired
-            </a>
-          ) : (
-            <button
-              type="button"
-              disabled
-              title="Application form link coming soon"
-              class="inline-block bg-primary/70 text-on-primary px-8 py-4 font-bold text-lg rounded-xl cursor-not-allowed"
-            >
-              Apply to have your lamp repaired
-            </button>
-          )}
-        </div>
-      )}
     </div>
   </section>
 

@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import StudioColabEmbed from '../components/StudioColabEmbed.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const allEvents = await getCollection('events');
+
+const upcomingEvents = allEvents
+  .filter((e) => e.data.status === 'upcoming')
+  .sort((a, b) => a.data.sortDate.localeCompare(b.data.sortDate));
+
+const featured =
+  upcomingEvents[0] ??
+  allEvents.sort((a, b) => b.data.sortDate.localeCompare(a.data.sortDate))[0];
+
+const formSlug = featured?.data.embedFormSlug || 'lamp-repair-app';
+---
+
+<Layout
+  title={`Apply for a Repair — ${featured?.data.title || 'Beacon Repair Cafe'}`}
+  brandTitle={featured?.data.title || 'Repair Cafe'}
+  description="Apply to have your lamp repaired at our upcoming Beacon Repair Cafe Mini Cafe."
+  activeNav="apply"
+>
+  <!-- Top Logo Header -->
+  <section class="max-w-7xl mx-auto px-6 bg-surface-container-lowest py-8 lg:py-10">
+    <div class="flex flex-col items-center gap-4 text-center">
+      <a href={`${base}/`}>
+        <img
+          src="https://www.studiocolab.net/project-images/repair-cafe/Dutchess_Beacon_Logo+500x337.png"
+          alt="Beacon-Fishkill Repair Cafe Logo"
+          class="w-[240px] max-w-full h-auto"
+        />
+      </a>
+      {featured && (
+        <p class="text-sm font-semibold text-on-surface-variant">
+          {featured.data.date} · {featured.data.hours} · {featured.data.location}
+        </p>
+      )}
+    </div>
+  </section>
+
+  <!-- Embedded Application Form -->
+  <section class="py-10 bg-surface-warm border-t border-outline-variant/20">
+    <div class="max-w-3xl mx-auto px-6 space-y-6">
+      <StudioColabEmbed
+        app="forms"
+        slug={formSlug}
+        title="Apply to have your lamp repaired"
+        height={820}
+      />
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 text-sm">
+        <a href={`${base}/`} class="text-primary font-semibold hover:underline">
+          ← Back to Event Details
+        </a>
+        <p class="text-xs text-on-surface-variant">
+          Having trouble viewing the form?{' '}
+          <a
+            href={`https://www.studiocolab.net/embed/forms/${formSlug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary font-semibold hover:underline"
+          >
+            Open in a new tab ↗
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
